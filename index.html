@@ -8,27 +8,63 @@
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <img class="profile-avatar" src="https://via.placeholder.com/180x180" alt=".">
-            <h1 class="profile-name">Gian Souza</h1>
-            <h2 class="profile-username">@ogiansouza</h2>
-            <ul class="numbers">
-                <li class="numbers-item">
-                    <h4>Repositórios</h4>
-                    5
-                </li>
-                <li class="numbers-item">
-                    <h4>Seguidores</h4>
-                    5
-                </li>
-                <li class="numbers-item">
-                    <h4>Seguindo</h4>
-                    5
-                </li>
-            </ul>
-            <a href="#" class="profile-link">Ver no Github</a>
-        </div>
-    </header>
+<header>
+    <div class="container">
+        <img class="profile-avatar" src="https://via.placeholder.com/180x180" alt=".">
+        <h1 class="profile-name" id="name"></h1>
+        <h2 class="profile-username" id="username"></h2>
+        <ul class="numbers">
+            <li class="numbers-item">
+                <h4>Repositórios</h4>
+                <span id="repos">5</span>
+            </li>
+            <li class="numbers-item">
+                <h4>Seguidores</h4>
+                <span id="followers">5</span>
+            </li>
+            <li class="numbers-item">
+                <h4>Seguindo</h4>
+                <span id="following">5</span>
+            </li>
+        </ul>
+        <a href="#" class="profile-link" id="link">Ver no Github</a>
+    </div>
+</header>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        const nameElement = document.querySelector('.profile-name');
+        const usernameElement = document.querySelector('.profile-username');
+        const avatarElement = document.querySelector('.profile-avatar');
+        const reposElement = document.querySelector('#repos');
+        const followersElement = document.querySelector('#followers');
+        const followingElement = document.querySelector('#following');
+        const linkElement = document.querySelector('#link'); 
+
+        const token = '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';
+        const url = 'https://api.github.com/users/SdneyFernandes';
+
+        fetch(url, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(function(res) {
+            return res.json();
+        })
+        .then(function(json) {
+            nameElement.innerText = json.name;
+            usernameElement.innerText = json.login;
+            avatarElement.src = json.avatar_url;
+            followingElement.innerText = json.following;
+            followersElement.innerText = json.followers;
+            reposElement.innerText = json.public_repos;
+            linkElement.href = json.html_url;
+        })
+        .catch(function(error) {
+            console.log('Erro ao buscar dados do usuário:', error);
+        });
+    });
+</script>
 </body>
 </html>
